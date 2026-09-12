@@ -1,0 +1,7 @@
+.vercel/
+node_modules/
+.DS_Store
+Thumbs.db
+# raw source drops (clean copies live under assets/)
+Personas/
+appshots/

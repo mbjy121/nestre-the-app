@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NESTRE — Mindset Profile · V2 (Side by Side)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- =========================================================
+     NESTRE · Section 3 · "Mindset Profile" — VERSION 2
+     Persona + ring sit SIDE BY SIDE. Ring card is sticky; only its
+     internal data re-tweens. Personas cross-fade / slide in place.
+     ========================================================= -->
+<style>
+  :root{
+    --bg-0:#05080e; --bg-1:#0a0e17;
+    --ink:#eaf0fb; --ink-dim:#9aa6bc; --ink-faint:#5c6880;
+    --cerebral:#e930ff; --alpha:#25e979; --prime:#18c8ff; --glow:#18c8ff;
+    --font:"Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    --pairH:min(70vmin,520px);
+  }
+  *{ box-sizing:border-box; } body{ margin:0; background:var(--bg-0); }
+
+  .ms-demo-spacer{ height:100vh; display:flex; align-items:center; justify-content:center; color:var(--ink-faint);
+    font-family:var(--font); letter-spacing:.25em; text-transform:uppercase; font-size:12px;
+    background:radial-gradient(1200px 600px at 50% -10%, rgba(24,200,255,.06), transparent 60%), linear-gradient(180deg,var(--bg-0),var(--bg-1)); }
+
+  .ms-section{ position:relative; font-family:var(--font); color:var(--ink);
+    background:radial-gradient(1200px 800px at 50% 25%, rgba(24,90,170,.12), transparent 60%), linear-gradient(180deg,var(--bg-1),var(--bg-0));
+    -webkit-font-smoothing:antialiased; }
+  .ms-stage{ height:100vh; width:100%; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+
+  .ms-ambient{ position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(620px 620px at 62% 54%, color-mix(in srgb,var(--glow) 24%, transparent), transparent 60%);
+    filter:blur(34px); opacity:.8; transition:background .6s ease; }
+
+  .ms-head{ position:absolute; top:6vh; left:0; right:0; text-align:center; padding:0 24px; z-index:6; pointer-events:none; }
+  .ms-eyebrow{ font-size:12px; letter-spacing:.36em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 12px; }
+  .ms-title{ font-size:clamp(24px,3.4vw,42px); font-weight:700; margin:0; letter-spacing:-.01em;
+    background:linear-gradient(90deg,#fff,#b9c6dd); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  /* ---- the side-by-side pair ---- */
+  .v2-pair{ position:relative; z-index:4; display:flex; gap:clamp(28px,4vw,60px); align-items:center; justify-content:center; }
+  .v2-slot{ position:relative; height:var(--pairH); aspect-ratio:4/5; }
+
+  /* ---- glowing Mindset card ---- */
+  .ms-card{ position:relative; height:var(--pairH); aspect-ratio:1/1.04; border-radius:30px; padding:30px 26px;
+    background:
+      radial-gradient(130% 90% at 12% 108%, rgba(233,48,255,.14), transparent 52%),
+      radial-gradient(130% 90% at 90% 106%, rgba(24,200,255,.14), transparent 52%),
+      radial-gradient(120% 70% at 50% -12%, rgba(120,150,255,.10), transparent 55%),
+      linear-gradient(165deg, rgba(20,27,44,.80), rgba(8,12,22,.86));
+    border:1px solid rgba(150,180,235,.20);
+    box-shadow:0 50px 120px -34px rgba(0,0,0,.85), 0 0 70px -12px rgba(70,120,220,.28), inset 0 1px 0 rgba(255,255,255,.10), inset 0 0 90px rgba(30,70,140,.14);
+    backdrop-filter:blur(16px) saturate(125%); -webkit-backdrop-filter:blur(16px) saturate(125%);
+    display:flex; flex-direction:column; align-items:center; overflow:hidden; }
+  .ms-card::before{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(120% 55% at 50% -8%, rgba(255,255,255,.10), transparent 55%);
+    -webkit-mask:linear-gradient(#000,transparent 40%); mask:linear-gradient(#000,transparent 40%); }
+  .ms-card-title{ font-size:clamp(20px,2.6vw,27px); font-weight:600; margin:4px 0 0; color:#eef3fb; letter-spacing:.01em; }
+  .ms-card-rule{ width:38px; height:2px; border-radius:2px; margin:14px 0 0; background:linear-gradient(90deg,transparent,rgba(180,200,230,.6),transparent); }
+  .ms-ringbox{ position:relative; flex:1; min-height:0; width:100%; display:flex; align-items:center; justify-content:center; padding:6px 0 10px; }
+  .ms-svg{ width:100%; height:100%; overflow:visible; }
+
+  .ms-track{ fill:none; stroke:rgba(120,145,185,.12); stroke-width:8; }
+  .ms-arc{ fill:none; stroke-linecap:round; stroke-width:8.5; }
+  .ms-arc.cerebral{ stroke:var(--cerebral); filter:drop-shadow(0 0 12px color-mix(in srgb,var(--cerebral) 85%,transparent)); }
+  .ms-arc.alpha{ stroke:var(--alpha); filter:drop-shadow(0 0 12px color-mix(in srgb,var(--alpha) 85%,transparent)); }
+  .ms-arc.prime{ stroke:var(--prime); filter:drop-shadow(0 0 12px color-mix(in srgb,var(--prime) 85%,transparent)); }
+  .ms-dot{ stroke:#fff; stroke-width:1.4; }
+  .ms-dot.cerebral{ fill:var(--cerebral); filter:drop-shadow(0 0 8px var(--cerebral)) drop-shadow(0 0 4px var(--cerebral)); }
+  .ms-dot.alpha{ fill:var(--alpha); filter:drop-shadow(0 0 8px var(--alpha)) drop-shadow(0 0 4px var(--alpha)); }
+  .ms-dot.prime{ fill:var(--prime); filter:drop-shadow(0 0 8px var(--prime)) drop-shadow(0 0 4px var(--prime)); }
+  .ms-lbl-val{ font-family:var(--font); font-weight:800; font-size:27px; letter-spacing:-.02em; }
+  .ms-lbl-name{ font-family:var(--font); font-weight:600; font-size:11px; letter-spacing:.2em; }
+  .ms-lbl.cerebral .ms-lbl-val{ fill:var(--cerebral); } .ms-lbl.cerebral .ms-lbl-name{ fill:#d59ce0; }
+  .ms-lbl.alpha .ms-lbl-val{ fill:var(--alpha); }       .ms-lbl.alpha .ms-lbl-name{ fill:#8fe3b0; }
+  .ms-lbl.prime .ms-lbl-val{ fill:var(--prime); }       .ms-lbl.prime .ms-lbl-name{ fill:#96daf0; }
+  .ms-n{ stroke:#fff; stroke-width:3.4; fill:none; stroke-linecap:round; stroke-linejoin:round; filter:drop-shadow(0 0 6px rgba(255,255,255,.4)); }
+  .ms-n-dot{ fill:#fff; filter:drop-shadow(0 0 5px rgba(255,255,255,.6)); }
+
+  /* ---- persona cards stacked in the slot ---- */
+  .ms-persona{ position:absolute; inset:0; opacity:0; will-change:transform,opacity,filter; }
+  .pcard{ position:relative; width:100%; height:100%; border-radius:26px; overflow:hidden;
+    background:linear-gradient(135deg,#1a2333,#0d1420);
+    border:1px solid rgba(150,180,235,.20);
+    box-shadow:0 45px 100px -34px rgba(0,0,0,.85), 0 0 60px -14px color-mix(in srgb,var(--glow) 45%,transparent), inset 0 1px 0 rgba(255,255,255,.08); }
+  .pphoto{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 22%; }
+  .pfallback{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:64px; font-weight:800; color:rgba(255,255,255,.22); }
+  .pgrad{ position:absolute; inset:0; background:linear-gradient(180deg, transparent 38%, rgba(6,9,16,.55) 66%, rgba(5,8,14,.94)); }
+  .ptype{ position:absolute; top:14px; left:14px; z-index:2; font-size:10px; letter-spacing:.24em; text-transform:uppercase; font-weight:700;
+    padding:7px 12px; border-radius:999px; background:rgba(8,12,20,.55); border:1px solid rgba(255,255,255,.16); color:#fff; backdrop-filter:blur(6px); }
+  .poverlay{ position:absolute; left:0; right:0; bottom:0; padding:22px 24px 24px; z-index:2; }
+  .pquote{ font-size:14px; line-height:1.5; color:#d7e0ef; margin:0 0 13px; font-style:italic;
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .pquote::before{ content:"\201C"; } .pquote::after{ content:"\201D"; }
+  .pname{ font-size:26px; font-weight:800; margin:0; letter-spacing:-.01em; }
+  .prole{ font-size:13.5px; color:var(--ink-dim); margin:3px 0 0; }
+
+  .ms-progress{ position:absolute; bottom:5vh; left:0; right:0; display:flex; gap:11px; justify-content:center; z-index:6; }
+  .ms-progress b{ width:8px; height:8px; border-radius:50%; background:rgba(150,170,200,.25); transition:all .35s ease; }
+  .ms-progress b.on{ background:#fff; box-shadow:0 0 14px rgba(255,255,255,.7); transform:scale(1.2); }
+
+  .ms-switch{ position:absolute; top:18px; right:20px; z-index:7; font-family:var(--font); font-size:12px; }
+  .ms-switch a{ color:var(--ink-dim); text-decoration:none; padding:6px 12px; border:1px solid rgba(150,170,200,.25); border-radius:999px; margin-left:6px; }
+  .ms-switch a.active{ color:#fff; border-color:rgba(255,255,255,.5); }
+
+  /* stack below 1000px */
+  @media (max-width:999px){
+    :root{ --pairH:auto; }
+    .ms-stage{ justify-content:flex-start; }
+    .ms-head{ top:3.5vh; } .ms-title{ font-size:clamp(21px,6.4vw,30px); }
+    .v2-pair{ flex-direction:column; gap:18px; margin-top:13vh; width:100%; }
+    .ms-card{ height:auto; width:min(82vw,340px); aspect-ratio:1/1.12; padding:20px 18px; border-radius:24px; order:1; }
+    .v2-slot{ height:auto; width:min(82vw,340px); aspect-ratio:16/10; order:2; }
+    .pgrad{ background:linear-gradient(180deg, transparent 26%, rgba(6,9,16,.5) 55%, rgba(5,8,14,.95)); }
+    .pphoto{ object-position:center 26%; }
+    .poverlay{ padding:14px 16px 16px; } .pquote{ font-size:11.5px; -webkit-line-clamp:2; margin-bottom:8px; }
+    .pname{ font-size:19px; } .prole{ font-size:12px; }
+    .ms-progress{ bottom:2.5vh; }
+  }
+  @media (max-width:400px){ .v2-pair{ margin-top:12vh; } .ms-card,.v2-slot{ width:min(84vw,320px); } .pquote{ -webkit-line-clamp:1; } }
+</style>
+</head>
+<body>
+  <div class="ms-demo-spacer">↑ previous section</div>
+
+  <section class="ms-section" id="mindset">
+    <div class="ms-stage">
+      <div class="ms-ambient" id="msAmbient"></div>
+      <div class="ms-switch"><span style="color:var(--ink-faint)">A/B:</span><a href="mindset-v1.html">V1</a><a href="mindset-v2.html" class="active">V2</a></div>
+
+      <div class="ms-head">
+        <p class="ms-eyebrow">The Mindset Profile</p>
+        <h2 class="ms-title">No two minds read the same.</h2>
+      </div>
+
+      <div class="v2-pair">
+        <div class="v2-slot" id="msPersonas"></div>
+        <div class="ms-card">
+          <div class="ms-card-title">Mindset Profile</div>
+          <div class="ms-card-rule"></div>
+          <div class="ms-ringbox">
+            <svg class="ms-svg" viewBox="0 0 360 400" preserveAspectRatio="xMidYMid meet" id="msSvg" aria-hidden="true">
+              <circle class="ms-track" cx="180" cy="188" r="118"></circle>
+              <g id="msArcs"></g><g id="msDots"></g><g id="msLabels"></g>
+              <g transform="translate(180,188)">
+                <path class="ms-n" d="M -25 32 L -25 -32 L 25 32 L 25 -32"></path>
+                <circle class="ms-n-dot" cx="-25" cy="-32" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="25" cy="32" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="25" cy="-32" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="-25" cy="8" r="3.3"></circle>
+                <circle class="ms-n-dot" cx="4" cy="-2" r="3"></circle>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="ms-progress" id="msProgress"></div>
+    </div>
+  </section>
+
+  <div class="ms-demo-spacer">↓ next section</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+  (function(){
+    gsap.registerPlugin(ScrollTrigger);
+    const PERSONAS=[
+      { type:'Baseline', name:'Sofia Gonzalez', role:'Professional Tennis', img:'assets/personas/persona-baseline.jpg',
+        quote:'I read balanced across the board — a little of everything, no single spike.', scores:{cerebral:33,alpha:34,prime:33}, accent:'#8fb4ff' },
+      { type:'Executive', name:'Mei Zhao', role:'Chief Strategy Officer', img:'assets/personas/persona-executive.jpg',
+        quote:'My mind lives in analysis and planning — Cerebral runs the show.', scores:{cerebral:48,alpha:32,prime:20}, accent:'#e930ff' },
+      { type:'Athlete', name:'Marcus Bennett', role:'Competitive Swimmer', img:'assets/personas/persona-athlete.jpg',
+        quote:"It's instinct and drive for me — Prime leads, and thinking follows.", scores:{cerebral:20,alpha:32,prime:48}, accent:'#18c8ff' },
+      { type:'Deep-Thinker', name:'Arjun Rao', role:'Endurance Cyclist', img:'assets/personas/persona-deepthinker.jpg',
+        quote:'Long roads, long thoughts. I go deep and quiet — heavy on Cerebral.', scores:{cerebral:52,alpha:20,prime:28}, accent:'#c774ff' },
+    ];
+    const SEG=[{key:'alpha',cls:'alpha',name:'ALPHA'},{key:'prime',cls:'prime',name:'PRIME'},{key:'cerebral',cls:'cerebral',name:'CEREBRAL'}];
+    const CX=180,CY=188,R=118,LBLR=150,GAP=5,SVGNS='http://www.w3.org/2000/svg';
+    const LBLPOS={ alpha:90, prime:180, cerebral:270 };
+    const arcsG=document.getElementById('msArcs'),dotsG=document.getElementById('msDots'),lblsG=document.getElementById('msLabels');
+    function polar(r,deg){ const a=(deg-90)*Math.PI/180; return [CX+r*Math.cos(a),CY+r*Math.sin(a)]; }
+    function arcPath(r,a0,a1){ const [x0,y0]=polar(r,a0),[x1,y1]=polar(r,a1); const large=(a1-a0)>180?1:0; return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`; }
+    const nodes=SEG.map(s=>{
+      const path=document.createElementNS(SVGNS,'path'); path.setAttribute('class','ms-arc '+s.cls); arcsG.appendChild(path);
+      const dot=document.createElementNS(SVGNS,'circle'); dot.setAttribute('class','ms-dot '+s.cls); dot.setAttribute('r','5'); dotsG.appendChild(dot);
+      const g=document.createElementNS(SVGNS,'g'); g.setAttribute('class','ms-lbl '+s.cls);
+      const val=document.createElementNS(SVGNS,'text'); val.setAttribute('class','ms-lbl-val');
+      const nm=document.createElementNS(SVGNS,'text'); nm.setAttribute('class','ms-lbl-name'); nm.textContent=s.name;
+      const deg=LBLPOS[s.key]; const [lx,ly]=polar(LBLR,deg); const anchor=deg===90?'start':deg===270?'end':'middle';
+      val.setAttribute('x',lx); val.setAttribute('y',deg===180?ly+6:ly-2); val.setAttribute('text-anchor',anchor);
+      nm.setAttribute('x',lx);  nm.setAttribute('y',deg===180?ly+22:ly+14); nm.setAttribute('text-anchor',anchor);
+      g.appendChild(val); g.appendChild(nm); lblsG.appendChild(g);
+      return {seg:s,path,dot,val};
+    });
+    const state={cerebral:33,alpha:34,prime:33};
+    function render(){
+      const total=state.cerebral+state.alpha+state.prime||1; const avail=360-SEG.length*GAP; let a=0;
+      nodes.forEach(n=>{ const v=state[n.seg.key]; const sweep=(v/total)*avail; const start=a+GAP/2,end=start+sweep;
+        n.path.setAttribute('d',arcPath(R,start,end)); const [dx,dy]=polar(R,start); n.dot.setAttribute('cx',dx); n.dot.setAttribute('cy',dy); a=end+GAP/2; });
+      const cer=Math.round(state.cerebral/total*100),alp=Math.round(state.alpha/total*100),pri=100-cer-alp; const map={cerebral:cer,alpha:alp,prime:pri};
+      nodes.forEach(n=> n.val.textContent=map[n.seg.key]+'%');
+    }
+    render();
+    const wrap=document.getElementById('msPersonas');
+    const cards=PERSONAS.map(p=>{ const el=document.createElement('div'); el.className='ms-persona';
+      el.innerHTML=`<div class="pcard"><span class="ptype">${p.type}</span>
+        <div class="pfallback">${p.name.split(' ').map(w=>w[0]).join('')}</div>
+        <img class="pphoto" src="${p.img}" alt="${p.name}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'">
+        <div class="pgrad"></div>
+        <div class="poverlay"><p class="pquote">${p.quote}</p><h3 class="pname">${p.name}</h3><p class="prole">${p.role}</p></div></div>`;
+      wrap.appendChild(el); return el; });
+    const prog=document.getElementById('msProgress');
+    const dots=PERSONAS.map((_,i)=>{ const b=document.createElement('b'); if(i===0)b.className='on'; prog.appendChild(b); return b; });
+    document.documentElement.style.setProperty('--glow',PERSONAS[0].accent);
+
+    const N=PERSONAS.length;
+    const mm=gsap.matchMedia();
+    mm.add({isMobile:'(max-width:999px)',isDesktop:'(min-width:1000px)'},(ctx)=>{
+      const isMobile=ctx.conditions.isMobile;
+      Object.assign(state,PERSONAS[0].scores); render();
+      // all personas occupy the same slot; slide in/out (vertical on desktop, same on mobile)
+      cards.forEach((c,i)=> gsap.set(c,{opacity:i===0?1:0, y:i===0?0:56, filter:i===0?'blur(0px)':'blur(8px)'}));
+      const scrollLen=isMobile?2600:3600;
+      const tl=gsap.timeline({ scrollTrigger:{ trigger:'.ms-section', start:'top top', end:'+='+scrollLen, pin:'.ms-stage', scrub:1, anticipatePin:1,
+        snap:{ snapTo:(v)=>Math.round(v*(N-1))/(N-1), duration:{min:0.2,max:0.5}, ease:'power1.inOut' },
+        onUpdate:(self)=>{ const active=Math.round(self.progress*(N-1)); dots.forEach((d,i)=>d.classList.toggle('on',i===active));
+          document.documentElement.style.setProperty('--glow',PERSONAS[active].accent); } } });
+      for(let i=0;i<N-1;i++){
+        const nxt=PERSONAS[i+1];
+        tl.to(state,{cerebral:nxt.scores.cerebral,alpha:nxt.scores.alpha,prime:nxt.scores.prime,duration:1,ease:'power2.inOut',onUpdate:render},i);
+        tl.to(cards[i],{opacity:0,y:-48,filter:'blur(8px)',duration:0.5,ease:'power2.in'},i);
+        tl.fromTo(cards[i+1],{opacity:0,y:56,filter:'blur(8px)'},{opacity:1,y:0,filter:'blur(0px)',duration:0.5,ease:'power2.out'},i+0.5);
+      }
+    });
+    window.addEventListener('load',()=>ScrollTrigger.refresh());
+  })();
+  </script>
+</body>
+</html>

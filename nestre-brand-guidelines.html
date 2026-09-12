@@ -1,0 +1,483 @@
+<meta charset="utf-8">
+<title>NESTRE Brand Guidelines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============ brand constants (fixed — swatches show these literally) ============ */
+  :root{
+    --paper:#f4f3ee; --navy:#081c26; --ink:#10212a;
+    --aqua:#98d6d3; --aqua-deep:#6bbdb9; --aqua-ink:#2b6b66;
+    --muted:#52666d; --line:#ced7d3; --white:#fff;
+
+    --sans:"Instrument Sans","Instrument Sans Fallback",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,"Cascadia Mono",Consolas,monospace;
+    --maxw:1080px;
+    --pad:clamp(20px,5vw,64px);
+
+    /* ---- doc theme tokens (light / paper) ---- */
+    --bg:var(--paper); --fg:var(--ink); --fg-dim:var(--muted);
+    --card:#ffffff; --card-2:#faf9f5; --border:var(--line);
+    --accent:var(--aqua-ink); --accent-fill:var(--aqua); --on-accent:var(--ink);
+    --eyebrow:var(--aqua-ink);
+    --shadow:0 1px 0 rgba(16,33,42,.04);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:var(--navy); --fg:#e9f1f0; --fg-dim:#9fb4b3;
+      --card:rgba(255,255,255,.045); --card-2:rgba(255,255,255,.03); --border:rgba(152,214,211,.20);
+      --accent:var(--aqua); --accent-fill:var(--aqua); --on-accent:var(--ink);
+      --eyebrow:var(--aqua); --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:var(--navy); --fg:#e9f1f0; --fg-dim:#9fb4b3;
+    --card:rgba(255,255,255,.045); --card-2:rgba(255,255,255,.03); --border:rgba(152,214,211,.20);
+    --accent:var(--aqua); --accent-fill:var(--aqua); --on-accent:var(--ink);
+    --eyebrow:var(--aqua); --shadow:none;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; scroll-padding-top:80px; }
+  body{ margin:0; background:var(--bg); color:var(--fg); font-family:var(--sans);
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  @media (prefers-reduced-motion:reduce){ html{ scroll-behavior:auto; } }
+
+  h1,h2,h3,h4{ margin:0; text-wrap:balance; font-weight:600; letter-spacing:-.02em; line-height:1.04; }
+  p{ margin:0; }
+  a{ color:var(--accent); }
+  code{ font-family:var(--mono); font-size:.88em; }
+
+  .eyebrow{ font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--eyebrow); }
+  .wrap{ max-width:var(--maxw); margin:0 auto; padding-inline:var(--pad); }
+
+  /* ---- top bar ---- */
+  .topbar{ position:sticky; top:0; z-index:50; background:color-mix(in srgb,var(--bg) 88%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .topbar .row{ max-width:var(--maxw); margin:0 auto; padding:14px var(--pad); display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brandmark{ display:flex; align-items:center; gap:11px; font-weight:600; letter-spacing:.02em; }
+  .brandmark .logo{ width:26px; height:26px; flex:none; }
+  .brandmark .logo svg{ display:block; width:100%; height:100%; }
+  .brandmark small{ display:block; font-size:9px; letter-spacing:.24em; text-transform:uppercase; color:var(--fg-dim); font-weight:600; margin-top:2px; }
+  .toc{ display:flex; gap:4px; flex-wrap:wrap; }
+  .toc a{ text-decoration:none; color:var(--fg-dim); font-size:13px; font-weight:500; padding:6px 11px; border-radius:999px; }
+  .toc a:hover{ color:var(--fg); background:var(--card-2); }
+  .themebtn{ font:inherit; font-size:13px; font-weight:500; cursor:pointer; color:var(--fg);
+    background:transparent; border:1px solid var(--border); border-radius:999px; padding:7px 14px; }
+  .themebtn:focus-visible, .toc a:focus-visible, a:focus-visible{ outline:2px solid var(--accent-fill); outline-offset:2px; border-radius:6px; }
+
+  /* ---- masthead ---- */
+  .mast{ padding:clamp(52px,9vw,104px) 0 clamp(40px,6vw,64px); border-bottom:1px solid var(--border); }
+  .mast h1{ font-size:clamp(40px,8vw,88px); letter-spacing:-.03em; margin:18px 0 0; }
+  .mast .lede{ font-size:clamp(17px,2.2vw,21px); color:var(--fg-dim); max-width:60ch; margin:22px 0 0; line-height:1.5; }
+  .mast .meta{ margin-top:30px; display:flex; flex-wrap:wrap; gap:10px 26px; font-size:13px; color:var(--fg-dim); }
+  .mast .meta b{ color:var(--fg); font-weight:600; }
+
+  section{ padding:clamp(48px,7vw,84px) 0; border-bottom:1px solid var(--border); }
+  .sec-head{ margin-bottom:34px; }
+  .sec-head h2{ font-size:clamp(26px,3.6vw,38px); margin:10px 0 0; }
+  .sec-head p{ color:var(--fg-dim); max-width:64ch; margin:12px 0 0; }
+
+  /* ---- color swatches ---- */
+  .swatch-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; }
+  .grp-label{ grid-column:1/-1; font-size:12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--fg-dim); margin:14px 0 -4px; }
+  .grp-label:first-child{ margin-top:0; }
+  .swatch{ border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--card); box-shadow:var(--shadow); }
+  .swatch .chip{ height:96px; display:flex; align-items:flex-end; justify-content:flex-end; padding:10px; }
+  .swatch .chip.tinted{ box-shadow:inset 0 0 0 1px rgba(16,33,42,.06); }
+  .swatch .body{ padding:13px 15px 15px; }
+  .swatch .nm{ font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .swatch .hex{ font-family:var(--mono); font-size:12.5px; color:var(--fg); margin-top:6px; text-transform:uppercase; }
+  .swatch .var{ font-family:var(--mono); font-size:11.5px; color:var(--fg-dim); margin-top:3px; }
+  .swatch .use{ font-size:12.5px; color:var(--fg-dim); margin-top:9px; line-height:1.45; }
+  .dotwhite{ width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.15); }
+  .dotink{ width:15px; height:15px; border-radius:50%; background:var(--ink); }
+
+  /* ---- type ---- */
+  .specimen{ border:1px solid var(--border); border-radius:16px; background:var(--card); box-shadow:var(--shadow); overflow:hidden; }
+  .specimen .row{ display:grid; grid-template-columns:1fr; gap:6px; padding:22px 24px; border-top:1px solid var(--border); }
+  .specimen .row:first-child{ border-top:0; }
+  .specimen .demo{ color:var(--fg); overflow:hidden; }
+  .specimen .spec{ font-family:var(--mono); font-size:12px; color:var(--fg-dim); display:flex; flex-wrap:wrap; gap:6px 18px; }
+  .specimen .spec b{ color:var(--accent); font-weight:600; }
+  .d-display{ font-size:clamp(40px,8vw,88px); font-weight:600; letter-spacing:-.03em; line-height:1.02; }
+  .d-h1{ font-size:clamp(34px,6vw,68px); font-weight:600; letter-spacing:-.02em; line-height:1.02; }
+  .d-h2{ font-size:clamp(28px,4.4vw,44px); font-weight:600; letter-spacing:-.02em; line-height:1.03; }
+  .d-h3{ font-size:22px; font-weight:500; letter-spacing:-.02em; }
+  .d-body{ font-size:16px; font-weight:400; line-height:1.5; max-width:62ch; }
+  .d-eyebrow{ font-size:12px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--eyebrow); }
+  .weights{ display:flex; flex-wrap:wrap; gap:22px; margin-top:24px; }
+  .weights div{ display:flex; flex-direction:column; }
+  .weights span{ font-size:34px; letter-spacing:-.02em; }
+  .weights small{ font-family:var(--mono); font-size:11.5px; color:var(--fg-dim); margin-top:2px; }
+
+  /* ---- components ---- */
+  .cols{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; align-items:start; }
+  .panel{ border:1px solid var(--border); border-radius:16px; background:var(--card); box-shadow:var(--shadow); padding:24px; }
+  .panel.on-navy{ background:var(--navy); border-color:rgba(152,214,211,.18); color:#e9f1f0; }
+  .panel h4{ font-size:14px; font-weight:600; letter-spacing:.02em; }
+  .panel .note{ font-size:13px; color:var(--fg-dim); margin-top:6px; }
+  .panel.on-navy .note{ color:#9fb4b3; }
+  .demorow{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:18px 0; }
+
+  /* buttons — the real system */
+  .btn{ font-family:var(--sans); font-weight:500; font-size:15px; border-radius:999px; padding:0 26px; height:46px;
+    display:inline-flex; align-items:center; gap:8px; border:1px solid transparent; cursor:pointer; text-decoration:none; line-height:1; }
+  .btn-primary{ background:var(--aqua); color:var(--ink); }
+  .btn-primary:hover{ background:var(--aqua-deep); }
+  .btn-dark{ background:var(--ink); color:#fff; }
+  .btn-dark:hover{ background:#1b3540; }
+  .btn-ghost{ background:transparent; color:var(--fg); border-color:var(--border); }
+  .btn-ghost.on-navy{ color:#e9f1f0; border-color:rgba(152,214,211,.4); }
+  .btn-sm{ height:38px; font-size:14px; padding:0 18px; }
+
+  .glass{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:18px 20px; color:#e9f1f0; }
+  .darkcard{ background:var(--ink); color:#fff; border-radius:18px; padding:22px 24px; }
+
+  .navchip{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; font-size:15px; }
+  .navchip a{ text-decoration:none; color:inherit; font-weight:400; }
+  .navchip .pill{ background:var(--aqua); color:var(--ink); padding:8px 16px; border-radius:999px; font-size:14px; font-weight:500; }
+
+  /* ---- section rhythm demo ---- */
+  .rhythm{ border:1px solid var(--border); border-radius:18px; overflow:hidden; }
+  .rhythm .band{ padding:44px var(--pad); }
+  .rhythm .band .eyebrow{ margin-bottom:12px; }
+  .rhythm .band h3{ font-size:clamp(24px,3.4vw,34px); }
+  .rhythm .band p{ margin-top:12px; max-width:52ch; }
+  .band.paper{ background:var(--paper); color:var(--ink); }
+  .band.paper p{ color:var(--muted); }
+  .band.paper .eyebrow{ color:var(--aqua-ink); }
+  .band.navy{ background:var(--navy); color:#fff; }
+  .band.navy p{ color:#9fb4b3; }
+  .band.navy .eyebrow{ color:var(--aqua); }
+  .band .tag{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; opacity:.6; text-transform:uppercase; }
+
+  /* ---- spacing scale ---- */
+  .scale{ display:flex; flex-direction:column; gap:10px; }
+  .scale .r{ display:grid; grid-template-columns:70px 70px 1fr; align-items:center; gap:16px; font-family:var(--mono); font-size:12.5px; color:var(--fg-dim); }
+  .scale .bar{ height:14px; border-radius:4px; background:var(--accent-fill); }
+  .scale .r b{ color:var(--fg); }
+
+  /* ---- blueprint ---- */
+  .blueprint{ display:flex; flex-direction:column; gap:14px; counter-reset:step; }
+  .bp{ display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center;
+    border:1px solid var(--border); border-radius:14px; background:var(--card); box-shadow:var(--shadow); padding:18px 20px; }
+  .bp .n{ font-family:var(--mono); font-size:13px; color:var(--accent); font-weight:600; min-width:26px; }
+  .bp .t b{ font-size:16px; font-weight:600; }
+  .bp .t p{ font-size:13.5px; color:var(--fg-dim); margin-top:3px; }
+  .bp .ground{ font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:5px 11px; border-radius:999px; border:1px solid var(--border); color:var(--fg-dim); white-space:nowrap; }
+  .bp .ground.navy{ background:var(--navy); color:var(--aqua); border-color:transparent; }
+  .bp .ground.paper{ background:var(--paper); color:var(--aqua-ink); border-color:var(--line); }
+
+  .callout{ border:1px solid var(--border); border-left:3px solid var(--accent-fill); border-radius:12px;
+    background:var(--card-2); padding:16px 20px; font-size:14px; color:var(--fg-dim); margin-top:22px; }
+  .callout b{ color:var(--fg); font-weight:600; }
+
+  footer{ padding:40px 0 64px; }
+  footer .wrap{ display:flex; flex-wrap:wrap; gap:12px 24px; justify-content:space-between; align-items:center; color:var(--fg-dim); font-size:13px; }
+
+  @media (max-width:640px){
+    .toc{ display:none; }
+    .scale .r{ grid-template-columns:56px 56px 1fr; }
+    .bp{ grid-template-columns:auto 1fr; } .bp .ground{ grid-column:2; justify-self:start; }
+  }
+</style>
+
+<div class="topbar">
+  <div class="row">
+    <div class="brandmark">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 40 40" fill="none"><path d="M9 30V10l22 20V10" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>NESTRE<small>Brand System</small></span>
+    </div>
+    <nav class="toc" aria-label="Sections">
+      <a href="#color">Color</a>
+      <a href="#type">Type</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#components">Components</a>
+      <a href="#layout">Layout</a>
+      <a href="#app">The App</a>
+    </nav>
+    <button class="themebtn" id="themeBtn" aria-label="Toggle theme">Theme</button>
+  </div>
+</div>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="eyebrow">Brand Guidelines · reverse-engineered from the live site</p>
+    <h1>The NESTRE visual system.</h1>
+    <p class="lede">Every token, type ramp, and component below is lifted from the production styles at nestre-os-cms.vercel.app — the reference for rebuilding <b style="color:var(--fg)">The&nbsp;App</b> page in the same language.</p>
+    <div class="meta">
+      <span>Typeface&nbsp; <b>Instrument Sans</b></span>
+      <span>Accent&nbsp; <b>Aqua #98D6D3</b></span>
+      <span>Grounds&nbsp; <b>Paper / Navy</b></span>
+      <span>Voice&nbsp; <b>“Performance. From within.”</b></span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ COLOR ============ -->
+  <section id="color">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">01 — Foundations</p>
+        <h2>Color</h2>
+        <p>A warm paper ground and a deep marine navy carry the brand; a single aqua accent does all the pointing. Text is near-black ink, never pure black. Aqua is a <em>fill</em> and highlight — for text on light grounds use Aqua&nbsp;Ink for contrast.</p>
+      </div>
+      <div class="swatch-grid">
+        <div class="grp-label">Grounds</div>
+        <div class="swatch">
+          <div class="chip tinted" style="background:#f4f3ee"><span class="dotink"></span></div>
+          <div class="body"><div class="nm">Paper</div><div class="hex">#F4F3EE</div><div class="var">--paper</div><div class="use">Primary page background. Warm off-white — the default canvas for light sections.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#081c26"><span class="dotwhite"></span></div>
+          <div class="body"><div class="nm">Navy</div><div class="hex">#081C26</div><div class="var">--navy</div><div class="use">Dark section ground and hero. Alternates with Paper down the page.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#10212a"><span class="dotwhite"></span></div>
+          <div class="body"><div class="nm">Ink</div><div class="hex">#10212A</div><div class="var">--ink</div><div class="use">Primary text on light grounds; fill for dark buttons and flat cards.</div></div>
+        </div>
+
+        <div class="grp-label">Accent</div>
+        <div class="swatch">
+          <div class="chip" style="background:#98d6d3"><span class="dotink"></span></div>
+          <div class="body"><div class="nm">Aqua</div><div class="hex">#98D6D3</div><div class="var">--aqua</div><div class="use">The signature. Primary button fill, eyebrows on navy, highlights, data marks.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#6bbdb9"><span class="dotink"></span></div>
+          <div class="body"><div class="nm">Aqua Deep</div><div class="hex">#6BBDB9</div><div class="var">--aqua-deep</div><div class="use">Hover / pressed state for aqua fills; secondary accent.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip" style="background:#2b6b66"><span class="dotwhite"></span></div>
+          <div class="body"><div class="nm">Aqua Ink</div><div class="hex">#2B6B66</div><div class="var">--aqua-ink</div><div class="use">Accent <em>text</em> on paper — links and eyebrows where aqua is too light.</div></div>
+        </div>
+
+        <div class="grp-label">Support</div>
+        <div class="swatch">
+          <div class="chip tinted" style="background:#52666d"><span class="dotwhite"></span></div>
+          <div class="body"><div class="nm">Muted</div><div class="hex">#52666D</div><div class="var">--muted</div><div class="use">Secondary / supporting text and captions on light grounds.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip tinted" style="background:#ced7d3"><span class="dotink"></span></div>
+          <div class="body"><div class="nm">Line</div><div class="hex">#CED7D3</div><div class="var">--line</div><div class="use">Hairline dividers and borders on paper. 1px, never heavy.</div></div>
+        </div>
+        <div class="swatch">
+          <div class="chip tinted" style="background:#ffffff"><span class="dotink"></span></div>
+          <div class="body"><div class="nm">White</div><div class="hex">#FFFFFF</div><div class="var">--white</div><div class="use">Text on navy; raised card surfaces on paper.</div></div>
+        </div>
+      </div>
+      <div class="callout"><b>Usage ratio.</b> Roughly 70% ground (paper/navy) · 25% ink &amp; muted type · 5% aqua. The aqua earns its impact by being scarce — one accent per view, not scattered.</div>
+    </div>
+  </section>
+
+  <!-- ============ TYPE ============ -->
+  <section id="type">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">02 — Foundations</p>
+        <h2>Typography</h2>
+        <p>One family does everything: <b style="color:var(--fg)">Instrument Sans</b>, weights 400–700. Display sizes run large with tight negative tracking; labels run tiny, uppercase, wide. The tension between those two extremes is the type system.</p>
+      </div>
+
+      <div class="specimen">
+        <div class="row">
+          <div class="demo d-eyebrow">Neurostrength Training</div>
+          <div class="spec"><span>Eyebrow / label</span><b>12px</b><span>600</span><span>+0.16em</span><span>uppercase · aqua</span></div>
+        </div>
+        <div class="row">
+          <div class="demo d-display">Performance.<br>From within.</div>
+          <div class="spec"><span>Display / H1</span><b>104px</b><span>600</span><span>line 1.02</span><span>tracking −0.02em</span></div>
+        </div>
+        <div class="row">
+          <div class="demo d-h2">For the moments that ask for more.</div>
+          <div class="spec"><span>Section / H2</span><b>54px</b><span>600</span><span>line 1.03</span><span>tracking −0.02em</span></div>
+        </div>
+        <div class="row">
+          <div class="demo d-h3">Your starting point. Not your limit.</div>
+          <div class="spec"><span>Subhead / H3</span><b>22px</b><span>500</span><span>tracking −0.02em</span></div>
+        </div>
+        <div class="row">
+          <div class="demo d-body">NESTRE turns your cognitive performance data into personalized NeuroStrength Training — built around you and guided by a NeuroTrainer.</div>
+          <div class="spec"><span>Body</span><b>16px</b><span>400</span><span>line 1.5</span><span>max ~62ch</span></div>
+        </div>
+      </div>
+
+      <div class="weights">
+        <div><span style="font-weight:400">Aa</span><small>400 · Regular — body</small></div>
+        <div><span style="font-weight:500">Aa</span><small>500 · Medium — buttons, H3</small></div>
+        <div><span style="font-weight:600">Aa</span><small>600 · Semibold — headings, eyebrows</small></div>
+        <div><span style="font-weight:700">Aa</span><small>700 · Bold — rare emphasis</small></div>
+      </div>
+      <div class="callout"><b>Rule of thumb.</b> The bigger the type, the tighter the tracking (down to −0.03em on display). The smaller the type, the wider — labels get +0.16em and uppercase. Never set body copy in aqua or uppercase.</div>
+    </div>
+  </section>
+
+  <!-- ============ BUTTONS ============ -->
+  <section id="buttons">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">03 — Components</p>
+        <h2>Buttons</h2>
+        <p>Fully-rounded pills, ~46px tall, medium weight. Two solids do almost all the work; a ghost outline is the tertiary option on either ground.</p>
+      </div>
+      <div class="cols">
+        <div class="panel">
+          <h4>On paper</h4>
+          <div class="demorow">
+            <a class="btn btn-primary" href="#buttons">Book a Consultation</a>
+            <a class="btn btn-dark" href="#buttons">Learn more</a>
+          </div>
+          <div class="demorow">
+            <a class="btn btn-ghost btn-sm" href="#buttons">Secondary</a>
+            <a class="btn btn-primary btn-sm" href="#buttons">Book now</a>
+          </div>
+          <p class="note">Primary = Aqua fill + Ink label. Dark = Ink fill + white label. Radius 999px · padding 0 26px · weight 500.</p>
+        </div>
+        <div class="panel on-navy">
+          <h4 style="color:#fff">On navy</h4>
+          <div class="demorow">
+            <a class="btn btn-primary" href="#buttons">Download for iOS</a>
+            <a class="btn btn-ghost on-navy" href="#buttons">Get it for Android</a>
+          </div>
+          <p class="note">Aqua stays the primary on dark grounds; the ghost switches to an aqua-tinted hairline outline with white label.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMPONENTS ============ -->
+  <section id="components">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">04 — Components</p>
+        <h2>Surfaces &amp; nav</h2>
+        <p>Cards are flat — border and radius do the separating, not shadow. Two recur: a solid ink card on paper, and a translucent glass card on navy.</p>
+      </div>
+      <div class="cols">
+        <div class="panel">
+          <h4>Flat card — on paper</h4>
+          <div class="demorow" style="margin-bottom:0">
+            <div class="darkcard" style="flex:1">
+              <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--aqua)">Cerebral</div>
+              <div style="font-size:38px;font-weight:600;letter-spacing:-.02em;margin-top:6px">48<span style="font-size:20px;color:#9fb4b3">%</span></div>
+              <p style="font-size:13px;color:#9fb4b3;margin-top:4px">Analysis &amp; planning</p>
+            </div>
+          </div>
+          <p class="note">Ink #10212A · radius 18px · no shadow. Used for stat / metric tiles.</p>
+        </div>
+        <div class="panel on-navy">
+          <h4 style="color:#fff">Glass card — on navy</h4>
+          <div class="glass" style="margin:16px 0 0">
+            <div style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--aqua)">Prime</div>
+            <div style="font-size:38px;font-weight:600;letter-spacing:-.02em;margin-top:6px;color:#fff">48<span style="font-size:20px;color:#9fb4b3">%</span></div>
+            <p style="font-size:13px;color:#9fb4b3;margin-top:4px">Instinct &amp; drive</p>
+          </div>
+          <p class="note">rgba(255,255,255,.06) · radius 14px · 1px white hairline border.</p>
+        </div>
+        <div class="panel">
+          <h4>Navigation</h4>
+          <div class="navchip" style="margin:16px 0 0">
+            <a href="#components">How It Works</a>
+            <a href="#components">Neuro Labs</a>
+            <a href="#components">The App</a>
+            <a href="#components">Our Story</a>
+            <span class="pill">Book a Consultation</span>
+          </div>
+          <p class="note">Links: 16px · weight 400 · ink (or white on navy). The one CTA is always an aqua pill.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LAYOUT ============ -->
+  <section id="layout">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">05 — Layout</p>
+        <h2>Section rhythm &amp; spacing</h2>
+        <p>The page reads as alternating full-bleed bands — <code>.sec.paper</code> then <code>.sec.navy</code> — each with a generous, consistent vertical rhythm. Content sits in a centered container ~1080–1200px wide.</p>
+      </div>
+
+      <div class="rhythm">
+        <div class="band paper">
+          <span class="tag">.sec.paper · padding-block 116px</span>
+          <p class="eyebrow" style="margin-top:14px">The Method</p>
+          <h3>Your starting point. Not your limit.</h3>
+          <p>Light band: ink headline, muted body, aqua-ink eyebrow. The workhorse ground for explanatory content.</p>
+        </div>
+        <div class="band navy">
+          <span class="tag">.sec.navy · padding-block 116px</span>
+          <p class="eyebrow" style="margin-top:14px">Neuro Labs</p>
+          <h3>For the moments that ask for more.</h3>
+          <p>Dark band: white headline, cool-grey body, aqua eyebrow and accents. Used for emphasis, showcases, and the hero.</p>
+        </div>
+      </div>
+
+      <div class="cols" style="margin-top:26px">
+        <div class="panel">
+          <h4>Vertical rhythm</h4>
+          <div class="scale" style="margin-top:16px">
+            <div class="r"><b>116px</b><span>section</span><span class="bar" style="width:100%"></span></div>
+            <div class="r"><b>90px</b><span>compact</span><span class="bar" style="width:78%"></span></div>
+            <div class="r"><b>34px</b><span>head→body</span><span class="bar" style="width:30%"></span></div>
+            <div class="r"><b>18px</b><span>element</span><span class="bar" style="width:16%"></span></div>
+            <div class="r"><b>8px</b><span>tight</span><span class="bar" style="width:7%"></span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h4>Container &amp; radii</h4>
+          <p class="note" style="margin-top:14px">Max width <b style="color:var(--fg)">~1080–1200px</b>, centered, with responsive side padding (20 → 64px).</p>
+          <p class="note">Radii: pills <b style="color:var(--fg)">999px</b> · flat cards <b style="color:var(--fg)">18px</b> · glass cards <b style="color:var(--fg)">14px</b>.</p>
+          <p class="note">Dividers: 1px <code>--line</code> on paper, 1px aqua-tint on navy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE APP BLUEPRINT ============ -->
+  <section id="app" style="border-bottom:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">06 — Application</p>
+        <h2>Blueprint: “The App” page</h2>
+        <p>A recommended section stack for rebuilding <code>/the-app</code> in this system — alternating grounds, one aqua accent per view, and the download CTA as the payoff. (The live route currently returns a server error, so this is the target to build against.)</p>
+      </div>
+
+      <div class="blueprint">
+        <div class="bp"><span class="n">01</span><div class="t"><b>Hero</b><p>Full-bleed navy with a device/app frame or product still. Aqua eyebrow → big white H1 → one-line subhead → aqua pill CTA + store badges.</p></div><span class="ground navy">Navy</span></div>
+        <div class="bp"><span class="n">02</span><div class="t"><b>What it does</b><p>Paper band. H2 + short lede, then a 3-up of flat ink feature tiles (icon, label, one line).</p></div><span class="ground paper">Paper</span></div>
+        <div class="bp"><span class="n">03</span><div class="t"><b>App showcase (pinned)</b><p>Navy band, scroll-pinned phone that swaps screens as copy steps through features — mirrors the home page <code>.app-showcase.app-pin</code> pattern.</p></div><span class="ground navy">Navy</span></div>
+        <div class="bp"><span class="n">04</span><div class="t"><b>Mindset Profile</b><p>The ring section — sticky gauge reshaping across personas. Glass cards on navy, aqua/green/cyan data marks.</p></div><span class="ground navy">Navy</span></div>
+        <div class="bp"><span class="n">05</span><div class="t"><b>Proof</b><p>Paper band: stat tiles or testimonials. Big numbers only where the figure is the point.</p></div><span class="ground paper">Paper</span></div>
+        <div class="bp"><span class="n">06</span><div class="t"><b>Download close</b><p>Navy closing band. Restated promise, iOS + Android buttons, quiet footer.</p></div><span class="ground navy">Navy</span></div>
+      </div>
+
+      <div class="callout"><b>Build tokens.</b> Drop these into <code>:root</code> and style everything through them — no raw hexes in components:
+        <div style="font-family:var(--mono);font-size:12.5px;color:var(--fg);margin-top:10px;line-height:1.7;overflow-x:auto">
+          --paper:#f4f3ee; --navy:#081c26; --ink:#10212a;<br>
+          --aqua:#98d6d3; --aqua-deep:#6bbdb9; --aqua-ink:#2b6b66;<br>
+          --muted:#52666d; --line:#ced7d3; --white:#fff;<br>
+          font-family:"Instrument Sans";
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>NESTRE Brand System · reverse-engineered from nestre-os-cms.vercel.app</span>
+    <span>Instrument Sans · Aqua #98D6D3 · Paper / Navy</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    const btn=document.getElementById('themeBtn');
+    const root=document.documentElement;
+    function cur(){ return root.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'); }
+    btn.addEventListener('click',()=>{ const next = cur()==='dark'?'light':'dark'; root.setAttribute('data-theme',next);
+      btn.textContent = next==='dark' ? 'Light' : 'Dark'; });
+  })();
+</script>

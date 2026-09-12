@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NESTRE — Mindset Profile Section</title>
+
+<!-- =========================================================
+     NESTRE · Section 3 · "Mindset Profile"
+     Sticky ring + 4 personas. Drop this whole <section class="ms-section">
+     (plus the <style> and <script> blocks) into your landing page.
+     GSAP + ScrollTrigger are loaded from CDN below.
+     Persona photos go in ./assets/personas/  (see filenames in JS).
+     ========================================================= -->
+
+<style>
+  :root{
+    --bg-0:#070a10;
+    --bg-1:#0b0f18;
+    --card-bg-1:rgba(20,27,40,0.55);
+    --card-bg-2:rgba(10,15,25,0.65);
+    --ink:#eaf0fb;
+    --ink-dim:#8b97ad;
+    --ink-faint:#5c6880;
+    --cerebral:#e930ff;   /* magenta */
+    --alpha:#22e06a;      /* green   */
+    --prime:#18c8ff;      /* cyan    */
+    --glow:#18c8ff;
+    --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+
+  /* ---- Section demo scaffolding (remove the spacers when embedding) ---- */
+  .ms-demo-spacer{
+    height:100vh; display:flex; align-items:center; justify-content:center;
+    color:var(--ink-faint); font-family:var(--font); letter-spacing:.25em;
+    text-transform:uppercase; font-size:12px;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, rgba(24,200,255,.06), transparent 60%),
+      linear-gradient(180deg, var(--bg-0), var(--bg-1));
+  }
+
+  /* ---- The section itself ---- */
+  .ms-section{
+    position:relative;
+    font-family:var(--font);
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 700px at 50% 20%, rgba(24,110,180,.10), transparent 60%),
+      linear-gradient(180deg, var(--bg-1), var(--bg-0));
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .ms-stage{
+    height:100vh;
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+  }
+
+  /* Ambient reactive glow behind everything */
+  .ms-ambient{
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(600px 600px at 50% 52%, color-mix(in srgb, var(--glow) 22%, transparent), transparent 62%);
+    filter:blur(20px);
+    opacity:.9;
+    transition:none;
+  }
+
+  /* Section eyebrow / heading */
+  .ms-head{
+    position:absolute; top:6.5vh; left:0; right:0;
+    text-align:center; padding:0 24px; z-index:6; pointer-events:none;
+  }
+  .ms-eyebrow{
+    font-size:12px; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--ink-dim); margin:0 0 12px;
+  }
+  .ms-title{
+    font-size:clamp(24px, 3.4vw, 40px); font-weight:700; margin:0;
+    letter-spacing:-.01em;
+    background:linear-gradient(90deg,#fff, #b9c6dd);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* ---- Center glass card with the ring ---- */
+  .ms-cardwrap{
+    position:relative; z-index:4;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .ms-card{
+    position:relative;
+    width:min(78vmin, 460px);
+    aspect-ratio:1 / 1.06;
+    border-radius:28px;
+    padding:26px 24px;
+    background:linear-gradient(160deg, var(--card-bg-1), var(--card-bg-2));
+    border:1px solid rgba(150,180,220,.14);
+    box-shadow:
+      0 40px 90px -30px rgba(0,0,0,.75),
+      inset 0 1px 0 rgba(255,255,255,.06),
+      inset 0 0 60px rgba(30,60,110,.10);
+    backdrop-filter:blur(14px) saturate(120%);
+    -webkit-backdrop-filter:blur(14px) saturate(120%);
+    display:flex; flex-direction:column; align-items:center;
+    overflow:hidden;
+  }
+  .ms-card::before{ /* soft top sheen */
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background:radial-gradient(120% 60% at 50% -10%, rgba(255,255,255,.08), transparent 55%);
+  }
+  .ms-card-title{
+    font-size:clamp(18px,2.4vw,24px); font-weight:600; margin:6px 0 0;
+    color:#eef3fb;
+  }
+  .ms-card-rule{ width:34px; height:2px; border-radius:2px; background:rgba(160,180,210,.35); margin:14px 0 0; }
+
+  .ms-ringbox{ position:relative; flex:1; min-height:0; width:100%; display:flex; align-items:center; justify-content:center; padding:2px 0 8px; }
+  .ms-svg{ width:100%; height:100%; overflow:visible; }
+
+  .ms-arc{ fill:none; stroke-linecap:round; stroke-width:9; transition:none; }
+  .ms-arc.cerebral{ stroke:var(--cerebral); filter:drop-shadow(0 0 10px color-mix(in srgb,var(--cerebral) 70%, transparent)); }
+  .ms-arc.alpha{    stroke:var(--alpha);    filter:drop-shadow(0 0 10px color-mix(in srgb,var(--alpha) 70%, transparent)); }
+  .ms-arc.prime{    stroke:var(--prime);    filter:drop-shadow(0 0 10px color-mix(in srgb,var(--prime) 70%, transparent)); }
+
+  .ms-track{ fill:none; stroke:rgba(120,140,175,.12); stroke-width:9; }
+
+  .ms-dot{ fill:#0b0f18; stroke-width:3; }
+  .ms-dot.cerebral{ stroke:var(--cerebral); filter:drop-shadow(0 0 6px var(--cerebral)); }
+  .ms-dot.alpha{    stroke:var(--alpha);    filter:drop-shadow(0 0 6px var(--alpha)); }
+  .ms-dot.prime{    stroke:var(--prime);    filter:drop-shadow(0 0 6px var(--prime)); }
+
+  .ms-lbl-val{ font-weight:800; font-size:20px; }
+  .ms-lbl-name{ font-weight:600; font-size:9.5px; letter-spacing:.18em; }
+  .ms-lbl.cerebral .ms-lbl-val{ fill:var(--cerebral);} .ms-lbl.cerebral .ms-lbl-name{ fill:#c98bd6;}
+  .ms-lbl.alpha .ms-lbl-val{ fill:var(--alpha);}       .ms-lbl.alpha .ms-lbl-name{ fill:#8fd9a8;}
+  .ms-lbl.prime .ms-lbl-val{ fill:var(--prime);}       .ms-lbl.prime .ms-lbl-name{ fill:#93d6ec;}
+
+  .ms-n{ stroke:#fff; stroke-width:3.2; fill:none; stroke-linecap:round; stroke-linejoin:round;
+         filter:drop-shadow(0 0 5px rgba(255,255,255,.35)); }
+  .ms-n-dot{ fill:#fff; filter:drop-shadow(0 0 4px rgba(255,255,255,.5)); }
+
+  /* ---- Persona cards (float left / right) ---- */
+  .ms-persona{
+    position:absolute; z-index:5; top:50%;
+    width:min(40vw, 360px);
+    transform:translateY(-50%);
+    opacity:0; will-change:transform,opacity,filter;
+    pointer-events:none;
+  }
+  .ms-persona.left{  left:clamp(16px, 5vw, 96px); }
+  .ms-persona.right{ right:clamp(16px, 5vw, 96px); }
+
+  .ms-pcard{
+    border-radius:22px; overflow:hidden;
+    background:linear-gradient(160deg, rgba(22,29,44,.72), rgba(9,13,22,.8));
+    border:1px solid rgba(150,180,220,.16);
+    box-shadow:0 30px 70px -28px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.05);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+  }
+  .ms-photo{ position:relative; width:100%; aspect-ratio:16/10; overflow:hidden;
+             background:linear-gradient(135deg,#1a2333,#0d1420); }
+  .ms-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .ms-photo::after{ content:""; position:absolute; inset:0;
+     background:linear-gradient(180deg, transparent 40%, rgba(9,13,22,.85)); }
+  .ms-photo .ms-fallback{
+     position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+     font-size:48px; font-weight:800; color:rgba(255,255,255,.25); letter-spacing:.05em;
+  }
+  .ms-ptype{
+    position:absolute; top:12px; left:12px; z-index:2;
+    font-size:10px; letter-spacing:.22em; text-transform:uppercase; font-weight:700;
+    padding:6px 11px; border-radius:999px;
+    background:rgba(8,12,20,.6); border:1px solid rgba(255,255,255,.14);
+    color:#fff; backdrop-filter:blur(6px);
+  }
+  .ms-pbody{ padding:16px 18px 18px; }
+  .ms-pname{ font-size:19px; font-weight:700; margin:0; }
+  .ms-prole{ font-size:12px; color:var(--ink-dim); margin:3px 0 0; letter-spacing:.02em; }
+  .ms-pquote{ font-size:13.5px; line-height:1.5; color:#cdd7e8; margin:13px 0 0; font-style:italic; }
+  .ms-pquote::before{ content:"\201C"; color:var(--ink-faint); margin-right:1px; }
+  .ms-pquote::after{ content:"\201D"; color:var(--ink-faint); margin-left:1px; }
+
+  /* side-by-side score row inside persona card */
+  .ms-scores{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px; }
+  .ms-score{ text-align:center; }
+  .ms-score-val{ font-size:18px; font-weight:800; line-height:1; }
+  .ms-score-bar{ height:4px; border-radius:4px; margin:7px 0 6px; background:rgba(255,255,255,.09); overflow:hidden; }
+  .ms-score-bar > i{ display:block; height:100%; border-radius:4px; }
+  .ms-score-name{ font-size:9px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-dim); }
+  .ms-score.cerebral .ms-score-val{ color:var(--cerebral);} .ms-score.cerebral .ms-score-bar>i{ background:var(--cerebral);}
+  .ms-score.alpha .ms-score-val{ color:var(--alpha);}       .ms-score.alpha .ms-score-bar>i{ background:var(--alpha);}
+  .ms-score.prime .ms-score-val{ color:var(--prime);}       .ms-score.prime .ms-score-bar>i{ background:var(--prime);}
+
+  /* progress dots */
+  .ms-progress{ position:absolute; bottom:5vh; left:0; right:0; display:flex; gap:10px;
+     justify-content:center; z-index:6; }
+  .ms-progress b{ width:8px; height:8px; border-radius:50%; background:rgba(150,170,200,.25);
+     transition:all .35s ease; }
+  .ms-progress b.on{ background:#fff; box-shadow:0 0 12px rgba(255,255,255,.6); transform:scale(1.15); }
+
+  /* ------- tablet ------- */
+  @media (max-width:1024px){
+    .ms-persona{ width:min(38vw,300px); }
+    .ms-card{ width:min(64vmin,400px); }
+  }
+
+  /* ------- mobile: stack ring on top, persona below ------- */
+  @media (max-width:760px){
+    .ms-stage{ justify-content:flex-start; }
+    .ms-head{ top:3.5vh; }
+    .ms-title{ font-size:clamp(21px,6.4vw,30px); }
+    .ms-eyebrow{ font-size:10.5px; margin-bottom:8px; }
+
+    .ms-cardwrap{ margin-top:14vh; }
+    .ms-card{ width:min(80vw,330px); aspect-ratio:1/1.1; padding:18px 16px; border-radius:22px; }
+    .ms-card-title{ font-size:17px; }
+    .ms-card-rule{ margin-top:8px; }
+
+    /* persona pinned to the bottom, centered by equal margins (no transform,
+       so GSAP owns x/y for the animation) */
+    .ms-persona{ top:auto; bottom:12vh; left:4vw; right:4vw; width:auto; transform:none; }
+    .ms-persona.left, .ms-persona.right{ left:4vw; right:4vw; }
+
+    /* compact horizontal card to save vertical space */
+    .ms-pcard{ display:flex; align-items:stretch; }
+    .ms-photo{ width:38%; min-width:38%; aspect-ratio:auto; }
+    .ms-photo::after{ background:linear-gradient(90deg, transparent 55%, rgba(9,13,22,.5)); }
+    .ms-pbody{ width:62%; padding:12px 13px; }
+    .ms-ptype{ top:8px; left:8px; font-size:8.5px; padding:4px 8px; }
+    .ms-pname{ font-size:16px; }
+    .ms-prole{ font-size:10.5px; }
+    .ms-pquote{ font-size:11.5px; line-height:1.4; margin-top:8px;
+                display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .ms-scores{ margin-top:10px; gap:7px; }
+    .ms-score-val{ font-size:15px; }
+    .ms-score-name{ font-size:8px; }
+
+    .ms-progress{ bottom:4vh; }
+  }
+
+  @media (max-width:400px){
+    .ms-cardwrap{ margin-top:13vh; }
+    .ms-card{ width:min(78vw,300px); }
+    .ms-pquote{ -webkit-line-clamp:2; }
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .ms-persona{ transition:none; }
+  }
+</style>
+</head>
+<body style="margin:0; background:#070a10;">
+
+  <!-- demo spacer above (delete when embedding) -->
+  <div class="ms-demo-spacer">↑ previous section</div>
+
+  <!-- ============ SECTION 3 : MINDSET PROFILE ============ -->
+  <section class="ms-section" id="mindset">
+    <div class="ms-stage">
+      <div class="ms-ambient" id="msAmbient"></div>
+
+      <div class="ms-head">
+        <p class="ms-eyebrow">The Mindset Profile</p>
+        <h2 class="ms-title">No two minds read the same.</h2>
+      </div>
+
+      <!-- center card -->
+      <div class="ms-cardwrap">
+        <div class="ms-card">
+          <div class="ms-card-title">Mindset Profile</div>
+          <div class="ms-card-rule"></div>
+          <div class="ms-ringbox">
+            <svg class="ms-svg" viewBox="0 0 360 402" preserveAspectRatio="xMidYMid meet" id="msSvg" aria-hidden="true">
+              <circle class="ms-track" cx="180" cy="190" r="120"></circle>
+              <g id="msArcs"></g>
+              <g id="msDots"></g>
+              <g id="msLabels"></g>
+              <!-- NESTRE circuit N -->
+              <g transform="translate(180,190)">
+                <path class="ms-n" d="M -26 34 L -26 -34 L 26 34 L 26 -34"></path>
+                <circle class="ms-n-dot" cx="-26" cy="-34" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="26" cy="34" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="26" cy="-34" r="4.2"></circle>
+                <circle class="ms-n-dot" cx="-26" cy="12" r="3.4"></circle>
+                <circle class="ms-n-dot" cx="6" cy="0" r="3"></circle>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- persona cards get injected here -->
+      <div id="msPersonas"></div>
+
+      <div class="ms-progress" id="msProgress"></div>
+    </div>
+  </section>
+
+  <!-- demo spacer below (delete when embedding) -->
+  <div class="ms-demo-spacer">↓ next section</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+  (function(){
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ---- Persona data (edit names / quotes / photos here) ----
+    const PERSONAS = [
+      { key:'baseline',   type:'Baseline',     name:'Sofia Gonzalez', role:'Professional Tennis',
+        img:'assets/personas/persona-baseline.jpg', side:'left',
+        quote:'I read balanced across the board — a little of everything, no single spike.',
+        scores:{ cerebral:33, alpha:34, prime:33 }, accent:'#ffffff' },
+      { key:'executive',  type:'Executive',    name:'Mei Zhao', role:'Chief Strategy Officer',
+        img:'assets/personas/persona-executive.jpg', side:'right',
+        quote:'My mind lives in analysis and planning — Cerebral runs the show.',
+        scores:{ cerebral:48, alpha:32, prime:20 }, accent:'#e930ff' },
+      { key:'athlete',    type:'Athlete',      name:'Marcus Bennett', role:'Competitive Swimmer',
+        img:'assets/personas/persona-athlete.jpg', side:'left',
+        quote:"It's instinct and drive for me — Prime leads, and thinking follows.",
+        scores:{ cerebral:20, alpha:32, prime:48 }, accent:'#18c8ff' },
+      { key:'deepthinker',type:'Deep-Thinker', name:'Arjun Rao', role:'Endurance Cyclist',
+        img:'assets/personas/persona-deepthinker.jpg', side:'right',
+        quote:'Long roads, long thoughts. I go deep and quiet — heavy on Cerebral.',
+        scores:{ cerebral:52, alpha:20, prime:28 }, accent:'#e930ff' },
+    ];
+
+    // segment order clockwise from top: Alpha (right) -> Prime (bottom) -> Cerebral (left)
+    const SEG = [
+      { key:'alpha',    cls:'alpha',    name:'ALPHA' },
+      { key:'prime',    cls:'prime',    name:'PRIME' },
+      { key:'cerebral', cls:'cerebral', name:'CEREBRAL' },
+    ];
+
+    const CX=180, CY=190, R=120, LBLR=160, GAP=7; // GAP in degrees between arcs
+    const SVGNS='http://www.w3.org/2000/svg';
+
+    const arcsG   = document.getElementById('msArcs');
+    const dotsG   = document.getElementById('msDots');
+    const lblsG   = document.getElementById('msLabels');
+    const ambient = document.getElementById('msAmbient');
+
+    // build svg nodes once
+    const nodes = SEG.map(s=>{
+      const path=document.createElementNS(SVGNS,'path');
+      path.setAttribute('class','ms-arc '+s.cls);
+      arcsG.appendChild(path);
+
+      const dot=document.createElementNS(SVGNS,'circle');
+      dot.setAttribute('class','ms-dot '+s.cls); dot.setAttribute('r','5');
+      dotsG.appendChild(dot);
+
+      const g=document.createElementNS(SVGNS,'g'); g.setAttribute('class','ms-lbl '+s.cls);
+      const val=document.createElementNS(SVGNS,'text'); val.setAttribute('class','ms-lbl-val');
+      const nm =document.createElementNS(SVGNS,'text'); nm.setAttribute('class','ms-lbl-name'); nm.textContent=s.name;
+      g.appendChild(val); g.appendChild(nm); lblsG.appendChild(g);
+      return { seg:s, path, dot, val, nm };
+    });
+
+    function polar(r,deg){ const a=(deg-90)*Math.PI/180; return [CX+r*Math.cos(a), CY+r*Math.sin(a)]; }
+    function arcPath(r,a0,a1){
+      const [x0,y0]=polar(r,a0), [x1,y1]=polar(r,a1);
+      const large=(a1-a0)>180?1:0;
+      return `M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
+    }
+
+    const state={ cerebral:33, alpha:34, prime:33 };
+
+    function render(){
+      const total = state.cerebral + state.alpha + state.prime || 1;
+      const avail = 360 - SEG.length*GAP;
+      let a = 0; // running angle from top
+      nodes.forEach(n=>{
+        const v = state[n.seg.key];
+        const sweep = (v/total)*avail;
+        const start = a + GAP/2;
+        const end   = start + sweep;
+        n.path.setAttribute('d', arcPath(R, start, end));
+        const [dx,dy]=polar(R, start); // boundary dot at arc start
+        n.dot.setAttribute('cx',dx); n.dot.setAttribute('cy',dy);
+        // label at arc midpoint, outside
+        const mid=(start+end)/2;
+        const [lx,ly]=polar(LBLR, mid);
+        const cos=Math.cos((mid-90)*Math.PI/180);
+        const anchor = cos>0.30?'start': cos<-0.30?'end':'middle';
+        n.val.setAttribute('x',lx); n.val.setAttribute('y',ly); n.val.setAttribute('text-anchor',anchor);
+        n.nm.setAttribute('x',lx);  n.nm.setAttribute('y',ly+13); n.nm.setAttribute('text-anchor',anchor);
+        a = end + GAP/2;
+      });
+      // numbers (guarantee they sum to 100)
+      const cer=Math.round(state.cerebral/total*100);
+      const alp=Math.round(state.alpha/total*100);
+      const pri=100-cer-alp;
+      const map={cerebral:cer,alpha:alp,prime:pri};
+      nodes.forEach(n=> n.val.textContent = map[n.seg.key]+'%');
+    }
+    render();
+
+    // ---- build persona cards ----
+    const wrap=document.getElementById('msPersonas');
+    const cards = PERSONAS.map(p=>{
+      const el=document.createElement('div');
+      el.className='ms-persona '+p.side;
+      el.innerHTML=`
+        <div class="ms-pcard">
+          <div class="ms-photo">
+            <span class="ms-ptype">${p.type}</span>
+            <div class="ms-fallback">${p.name.split(' ').map(w=>w[0]).join('')}</div>
+            <img src="${p.img}" alt="${p.name}"
+                 onload="this.previousElementSibling.style.display='none'"
+                 onerror="this.style.display='none'">
+          </div>
+          <div class="ms-pbody">
+            <h3 class="ms-pname">${p.name}</h3>
+            <p class="ms-prole">${p.role}</p>
+            <p class="ms-pquote">${p.quote}</p>
+            <div class="ms-scores">
+              <div class="ms-score cerebral"><div class="ms-score-val">${p.scores.cerebral}</div><div class="ms-score-bar"><i style="width:${p.scores.cerebral*2}%"></i></div><div class="ms-score-name">Cerebral</div></div>
+              <div class="ms-score alpha"><div class="ms-score-val">${p.scores.alpha}</div><div class="ms-score-bar"><i style="width:${p.scores.alpha*2}%"></i></div><div class="ms-score-name">Alpha</div></div>
+              <div class="ms-score prime"><div class="ms-score-val">${p.scores.prime}</div><div class="ms-score-bar"><i style="width:${p.scores.prime*2}%"></i></div><div class="ms-score-name">Prime</div></div>
+            </div>
+          </div>
+        </div>`;
+      wrap.appendChild(el);
+      return el;
+    });
+
+    // progress dots
+    const prog=document.getElementById('msProgress');
+    const dots=PERSONAS.map((_,i)=>{ const b=document.createElement('b'); if(i===0)b.className='on'; prog.appendChild(b); return b; });
+
+    document.documentElement.style.setProperty('--glow', PERSONAS[0].accent);
+    const N = PERSONAS.length;              // 4
+
+    // Build desktop + mobile variants of the interaction. matchMedia auto-swaps
+    // and cleans up (reverting inline styles) when the breakpoint changes.
+    const mm = gsap.matchMedia();
+    mm.add({ isMobile:'(max-width:760px)', isDesktop:'(min-width:761px)' }, (ctx)=>{
+      const isMobile = ctx.conditions.isMobile;
+
+      // reset ring + card states for this layout
+      Object.assign(state, PERSONAS[0].scores); render();
+
+      const entrance = (persona, active)=>{
+        if(isMobile) return { x:0, y: active?0:44 };
+        const dir = persona.side==='left' ? -70 : 70;
+        return { x: active?0:dir, y:0 };
+      };
+
+      cards.forEach((c,i)=>{
+        const e = entrance(PERSONAS[i], i===0);
+        gsap.set(c, { opacity:i===0?1:0, x:e.x, y:e.y, filter:i===0?'blur(0px)':'blur(6px)' });
+      });
+
+      const scrollLen = isMobile ? 2600 : 3400;
+      const tl = gsap.timeline({
+        scrollTrigger:{
+          trigger:'.ms-section',
+          start:'top top',
+          end:'+='+scrollLen,
+          pin:'.ms-stage',
+          scrub:1,
+          anticipatePin:1,
+          snap:{ snapTo:(v)=>Math.round(v*(N-1))/(N-1), duration:{min:0.2,max:0.5}, ease:'power1.inOut' },
+          onUpdate:(self)=>{
+            const active=Math.round(self.progress*(N-1));
+            dots.forEach((d,i)=> d.classList.toggle('on', i===active));
+            document.documentElement.style.setProperty('--glow', PERSONAS[active].accent);
+          }
+        }
+      });
+
+      for(let i=0;i<N-1;i++){
+        const out = isMobile ? { y:-40, x:0 } : { x: PERSONAS[i].side==='left'?-70:70, y:0 };
+        const inF = entrance(PERSONAS[i+1], false);
+        const nxt = PERSONAS[i+1];
+        tl.to(state,{ cerebral:nxt.scores.cerebral, alpha:nxt.scores.alpha, prime:nxt.scores.prime,
+                      duration:1, ease:'power2.inOut', onUpdate:render }, i);
+        tl.to(cards[i],{ opacity:0, x:out.x, y:out.y, filter:'blur(6px)', duration:0.5, ease:'power2.in' }, i);
+        tl.fromTo(cards[i+1],{ opacity:0, x:inF.x, y:inF.y, filter:'blur(6px)' },
+                             { opacity:1, x:0, y:0, filter:'blur(0px)', duration:0.5, ease:'power2.out' }, i+0.5);
+      }
+    });
+
+    // keep ScrollTrigger honest if fonts/layout shift
+    window.addEventListener('load', ()=> ScrollTrigger.refresh());
+  })();
+  </script>
+</body>
+</html>

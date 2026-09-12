@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NESTRE — Mindset Profile · A/B</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg-0:#05080e; --bg-1:#0a0e17; --ink:#eaf0fb; --ink-dim:#9aa6bc; --ink-faint:#5c6880;
+    --cerebral:#e930ff; --alpha:#25e979; --prime:#18c8ff;
+    --font:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; min-height:100vh; font-family:var(--font); color:var(--ink);
+    background:radial-gradient(1000px 700px at 50% -5%, rgba(24,120,220,.14), transparent 60%), linear-gradient(180deg,var(--bg-1),var(--bg-0));
+    display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 22px; -webkit-font-smoothing:antialiased; }
+  .eyebrow{ font-size:12px; letter-spacing:.36em; text-transform:uppercase; color:var(--ink-dim); margin:0 0 12px; text-align:center; }
+  h1{ font-size:clamp(26px,4vw,44px); font-weight:800; margin:0 0 10px; text-align:center; letter-spacing:-.02em;
+    background:linear-gradient(90deg,#fff,#b9c6dd); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .sub{ color:var(--ink-dim); text-align:center; max-width:560px; margin:0 auto 40px; line-height:1.6; font-size:15px; }
+  .grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; width:min(920px,100%); }
+  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+  a.card{ display:block; text-decoration:none; color:inherit; border-radius:22px; overflow:hidden; position:relative;
+    background:linear-gradient(160deg, rgba(20,27,44,.8), rgba(8,12,22,.86)); border:1px solid rgba(150,180,235,.2);
+    box-shadow:0 40px 90px -34px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.07); transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+  a.card:hover{ transform:translateY(-5px); border-color:rgba(255,255,255,.4);
+    box-shadow:0 55px 110px -34px rgba(0,0,0,.85), 0 0 60px -14px rgba(70,130,230,.4); }
+  .thumb{ height:190px; position:relative; overflow:hidden; background:radial-gradient(120% 90% at 20% 110%, rgba(233,48,255,.16), transparent 55%), radial-gradient(120% 90% at 85% 110%, rgba(24,200,255,.16), transparent 55%), #0b1120; }
+  .ring{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:120px; height:120px; border-radius:50%;
+    background:conic-gradient(from -90deg, var(--alpha) 0 33%, var(--prime) 33% 66%, var(--cerebral) 66% 100%);
+    -webkit-mask:radial-gradient(closest-side, transparent 68%, #000 70%); mask:radial-gradient(closest-side, transparent 68%, #000 70%);
+    filter:drop-shadow(0 0 10px rgba(24,200,255,.5)); }
+  .thumb.v2 .row{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; gap:14px; }
+  .thumb.v2 .pp{ width:82px; height:104px; border-radius:12px; background:linear-gradient(135deg,#26324a,#141c2c); border:1px solid rgba(255,255,255,.12); }
+  .thumb.v2 .ring{ position:static; transform:none; width:104px; height:104px; }
+  .body{ padding:20px 22px 24px; }
+  .tag{ display:inline-block; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; font-weight:700; color:#fff;
+    padding:5px 10px; border-radius:999px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16); margin-bottom:12px; }
+  .body h2{ margin:0 0 6px; font-size:20px; font-weight:700; }
+  .body p{ margin:0; color:var(--ink-dim); font-size:13.5px; line-height:1.55; }
+  .foot{ margin-top:40px; color:var(--ink-faint); font-size:12px; text-align:center; }
+</style>
+</head>
+<body>
+  <p class="eyebrow">NESTRE · Section 3</p>
+  <h1>Mindset Profile — A/B</h1>
+  <p class="sub">Two takes on the same idea: a sticky ring that reshapes to each person's mindset fingerprint. Pick a version to preview the full scroll interaction.</p>
+
+  <div class="grid">
+    <a class="card" href="mindset-v1.html">
+      <div class="thumb v1"><div class="ring"></div></div>
+      <div class="body">
+        <span class="tag">Version 1</span>
+        <h2>Alternating float</h2>
+        <p>Ring pinned in the center; each persona floats in from an alternating side (left / right) as the ring re-tweens.</p>
+      </div>
+    </a>
+    <a class="card" href="mindset-v2.html">
+      <div class="thumb v2"><div class="row"><div class="pp"></div><div class="ring"></div></div></div>
+      <div class="body">
+        <span class="tag">Version 2</span>
+        <h2>Side by side</h2>
+        <p>Persona and ring sit side by side. The ring stays put; only its data re-tweens while personas cross-fade / slide in place.</p>
+      </div>
+    </a>
+  </div>
+
+  <p class="foot">Both share the same data, styling, and 4 personas — Baseline · Executive · Athlete · Deep-Thinker.</p>
+</body>
+</html>
