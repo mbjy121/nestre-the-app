@@ -59,14 +59,12 @@
   .hero-overlay{ position:absolute; inset:0; z-index:1; pointer-events:none;
     background:linear-gradient(90deg, rgba(6,20,28,.95) 0%, rgba(6,20,28,.78) 42%, rgba(6,20,28,.45) 100%),
                radial-gradient(900px 600px at 82% 30%, rgba(152,214,211,.16), transparent 55%); }
-  .hero .wrap{ position:relative; z-index:2; display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center; padding-top:140px; padding-bottom:96px; }
+  .hero .wrap{ position:relative; z-index:2; padding-top:clamp(150px,20vh,220px); padding-bottom:clamp(90px,14vh,140px); }
+  .hero-inner{ max-width:640px; }
   .hero h1{ font-size:clamp(40px,6.4vw,84px); letter-spacing:-.03em; margin:20px 0 0; }
   .hero .sub{ font-size:clamp(15px,1.5vw,17px); color:rgba(233,241,240,.85); max-width:46ch; margin:22px 0 0; line-height:1.55; }
   .hero .cta{ display:flex; flex-wrap:wrap; gap:14px; margin-top:34px; }
-  .hero-phone{ position:relative; justify-self:center; }
-  .hero-phone .phone{ width:min(300px,64vw); transform:rotate(-12deg); box-shadow:0 60px 120px -30px rgba(0,0,0,.75); }
-  .hero-phone::after{ content:""; position:absolute; inset:-12% -8%; background:radial-gradient(closest-side, rgba(152,214,211,.30), transparent 70%); filter:blur(30px); z-index:-1; }
-  @media (max-width:820px){ .hero .wrap{ grid-template-columns:1fr; text-align:center; padding-top:120px; } .hero .sub{ margin-inline:auto; } .hero .cta{ justify-content:center; } .hero-phone{ margin-top:30px; } .hero-phone .phone{ transform:rotate(-8deg); } }
+  @media (max-width:820px){ .hero .wrap{ text-align:center; } .hero-inner{ max-width:none; } .hero .sub{ margin-inline:auto; } .hero .cta{ justify-content:center; } }
 
   /* phone frame */
   .phone{ aspect-ratio:9/19.3; border-radius:38px; background:#05080c; padding:7px; border:1px solid rgba(255,255,255,.10); box-shadow:0 30px 70px -26px rgba(0,0,0,.6); }
@@ -87,12 +85,13 @@
   .s2-stage{ height:100vh; display:flex; align-items:center; overflow:hidden; }
   .s2-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(30px,5vw,72px); align-items:center; width:100%; }
   .s2-left .sec-title{ margin-top:16px; }
-  .pills{ display:inline-flex; gap:8px; margin-top:28px; padding:6px; background:#fff; border:1px solid var(--line); border-radius:999px; flex-wrap:wrap; }
-  .pill{ font-size:14px; font-weight:500; color:var(--muted); padding:10px 20px; border-radius:999px; transition:all .35s ease; white-space:nowrap; }
-  .pill.on{ background:var(--ink); color:#fff; }
+  .pills{ display:flex; gap:10px; margin-top:28px; flex-wrap:wrap; }
+  .pill{ font-size:14px; font-weight:500; color:var(--muted); padding:11px 20px; border-radius:999px; border:1px solid var(--line); background:#fff; transition:all .35s ease; white-space:nowrap; }
+  .pill.on{ background:var(--ink); color:#fff; border-color:var(--ink); }
   .s2-right{ display:flex; justify-content:center; }
   .s2-phone{ width:min(330px,82%); position:relative; }
   .s2-phone .scr img{ position:absolute; inset:0; opacity:0; will-change:transform,opacity; }
+  @media (prefers-reduced-motion:reduce){ .s2-phone .scr img{ transition:none; } }
   @media (max-width:820px){ .s2-grid{ grid-template-columns:1fr; gap:24px; text-align:center; } .pills{ margin-inline:auto; } .s2-phone{ width:min(62vw,260px); } .s2-stage{ align-items:center; } }
 
   /* ---------- feature columns ---------- */
@@ -106,13 +105,13 @@
 
   /* ---------- mindset (V2) full viewport ---------- */
   .mind-sec{ background:var(--navy); color:#fff; }
-  .mind-stage{ height:100vh; width:100%; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:15vh 0 12vh; }
+  .mind-stage{ height:100vh; width:100%; overflow:hidden; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:92px 0 40px; }
   .mind-ambient{ position:absolute; inset:0; pointer-events:none; background:radial-gradient(560px 560px at 62% 52%, color-mix(in srgb,var(--glow,#98d6d3) 22%, transparent), transparent 60%); filter:blur(36px); opacity:.8; }
-  .mind-head{ position:absolute; top:5.5vh; left:0; right:0; text-align:center; padding:0 24px; z-index:6; }
-  .mind-head h2{ font-size:clamp(22px,3.2vw,38px); margin:10px 0 0; }
+  .mind-head{ position:static; text-align:center; padding:0 24px; z-index:6; margin-bottom:clamp(16px,2.4vh,28px); }
+  .mind-head h2{ font-size:clamp(22px,3.2vw,38px); margin:9px 0 0; }
   .pair{ position:relative; z-index:4; display:flex; gap:clamp(24px,3.4vw,48px); align-items:center; justify-content:center; }
-  .pslot{ position:relative; height:min(54vmin,420px); aspect-ratio:4/5; }
-  .mcard{ position:relative; height:min(54vmin,420px); aspect-ratio:1/1.04; border-radius:26px; padding:24px 22px;
+  .pslot{ position:relative; height:min(48vmin,380px); aspect-ratio:4/5; }
+  .mcard{ position:relative; height:min(48vmin,380px); aspect-ratio:1/1.04; border-radius:26px; padding:22px 20px;
     background:radial-gradient(130% 90% at 12% 108%, rgba(233,48,255,.12), transparent 52%), radial-gradient(130% 90% at 90% 106%, rgba(24,200,255,.12), transparent 52%), linear-gradient(165deg, rgba(20,32,44,.85), rgba(8,14,22,.9));
     border:1px solid rgba(152,214,211,.2); box-shadow:0 50px 120px -34px rgba(0,0,0,.85), 0 0 70px -12px rgba(70,120,220,.26), inset 0 1px 0 rgba(255,255,255,.09);
     display:flex; flex-direction:column; align-items:center; overflow:hidden; }
@@ -145,14 +144,15 @@
   .pquote{ font-size:12.5px; line-height:1.45; color:#d7e0ef; margin:0 0 10px; font-style:italic; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .pname{ font-size:21px; font-weight:800; letter-spacing:-.01em; }
   .prole{ font-size:12px; color:#9fb4b3; margin-top:2px; }
-  .mprog{ position:absolute; bottom:4.5vh; left:0; right:0; display:flex; gap:10px; justify-content:center; z-index:6; }
+  .mprog{ position:static; margin-top:clamp(14px,2.2vh,26px); display:flex; gap:10px; justify-content:center; z-index:6; }
   .mprog b{ width:8px; height:8px; border-radius:50%; background:rgba(150,170,200,.28); transition:all .35s; }
   .mprog b.on{ background:#fff; box-shadow:0 0 14px rgba(255,255,255,.7); transform:scale(1.2); }
   @media (max-width:999px){
-    .mind-stage{ padding:13vh 0 10vh; }
-    .pair{ flex-direction:column; gap:14px; }
-    .pslot{ height:auto; width:min(78vw,320px); aspect-ratio:16/10; }
-    .mcard{ height:auto; width:min(78vw,320px); aspect-ratio:1/1.1; }
+    .mind-stage{ padding:80px 0 30px; }
+    .mind-head{ margin-bottom:14px; }
+    .pair{ flex-direction:column; gap:12px; }
+    .pslot{ height:auto; width:min(66vw,270px); aspect-ratio:16/10; }
+    .mcard{ height:auto; width:min(66vw,270px); aspect-ratio:1/1.08; }
     .pname{ font-size:18px; }
   }
 
@@ -230,7 +230,7 @@
   </video>
   <div class="hero-overlay"></div>
   <div class="wrap">
-    <div>
+    <div class="hero-inner">
       <p class="eyebrow" style="color:var(--aqua)">The NESTRE App</p>
       <h1>Your mind.<br>On your schedule.</h1>
       <p class="sub">Daily cognitive workouts, mental training, and Mindset Frames — deep work for the everyday, guided by your own performance data.</p>
@@ -238,9 +238,6 @@
         <a class="btn btn-primary" href="https://apps.apple.com/us/app/nestre-health-and-performance/id6443393462">Download for iOS</a>
         <a class="btn btn-ghost" href="https://play.google.com/store/apps/details?id=com.nestreapp.prod">Get it on Android</a>
       </div>
-    </div>
-    <div class="hero-phone">
-      <div class="phone"><div class="scr"><img src="assets/appshots/appshot-2.png" alt="NESTRE app — Frames"></div></div>
     </div>
   </div>
 </section>
@@ -412,11 +409,12 @@
     const pills=[...document.querySelectorAll('#pills .pill')];
     const N=screens.length;
     function render(active){
+      // one image at a time: current slides left & fades out, next fades in from the right
       screens.forEach((im,i)=>{
         const d=i-active;
         const ad=Math.abs(d);
-        im.style.opacity = Math.max(0, 1-ad);
-        im.style.transform = `translateY(${d*36}px) scale(${Math.max(0.94,1-ad*0.06)})`;
+        im.style.transform = `translateX(${d*112}%)`;
+        im.style.opacity = Math.max(0, 1-ad*1.1);
         im.style.zIndex = 10-Math.round(ad*10);
       });
       const idx=Math.max(0,Math.min(N-1,Math.round(active)));
